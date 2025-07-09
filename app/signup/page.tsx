@@ -9,6 +9,8 @@ import { useForm } from "react-hook-form"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { toast } from "sonner"
+import { useState } from "react"
+import { Loader2 } from "lucide-react"
 const formSchema = z.object({
     
         firstname: z.string().min(2, "At least 2 characters").max(50),
@@ -32,6 +34,9 @@ const formSchema = z.object({
 })
 
 export default function SignUpForm() {
+
+    const [loading,setLoading]=useState(false)
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -55,6 +60,7 @@ export default function SignUpForm() {
  async  function onSubmit(values: z.infer<typeof formSchema>) {
 
             try{
+                setLoading(true)
               const { firstname, lastname, ...rest } = values;
               const payload = {
                 ...rest,
@@ -76,7 +82,8 @@ export default function SignUpForm() {
               const data= await response.json()
               console.log("Signup successful:", data);
               toast.success("Signup successful.")
-
+              form.reset()
+              setLoading(false)
             }
             catch(e){
                 console.error("Signup error:", e);
@@ -84,7 +91,6 @@ export default function SignUpForm() {
             }
 
 
-        console.log(values)
     }
 
     return (
@@ -266,8 +272,8 @@ export default function SignUpForm() {
                                 />
                             </div>
 
-                            <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
-                                Create Account
+                            <Button disabled={loading} type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+                                {loading?<Loader2 className="size-4 animate-spin" />:"Create Account"}
                             </Button>
                         </form>
                     </Form>

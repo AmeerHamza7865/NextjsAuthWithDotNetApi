@@ -11,6 +11,15 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card"
+
+import {
+  AlertDialog,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+
 import { Button } from "@/components/ui/button"
 
 interface UserProfile {
@@ -102,35 +111,49 @@ export default function AccountProfile() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle>Your Profile</CardTitle>
-          <CardDescription>
-            Manage your account information
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="space-y-2">
-            <p className="text-sm font-medium">Name</p>
-            <p className="text-sm">{profile.fullName}</p>
-          </div>
-          
-          <div className="space-y-2">
-            <p className="text-sm font-medium">Email</p>
-            <p className="text-sm">{profile.email}</p>
-          </div>
+      <AlertDialog>
+        <AlertDialogTrigger asChild>
+          <Button variant="outline" className="mr-2">Account Profile</Button>
+        </AlertDialogTrigger>
+        <AlertDialogContent className="max-w-[95vw] sm:max-w-md p-0">
+          {/* Tightly integrated AccountProfile without extra spacing */}
+          <div className="overflow-y-auto max-h-[60vh]">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Your Profile</CardTitle>
+            <CardDescription>
+          Manage your account information
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="space-y-2">
+          <p className="text-sm font-medium">Name</p>
+          <p className="text-sm">{profile.fullName}</p>
+            </div>
+            
+            <div className="space-y-2">
+          <p className="text-sm font-medium">Email</p>
+          <p className="text-sm">{profile.email}</p>
+            </div>
 
-          {/* Add more profile fields as needed */}
+            {/* Add more profile fields as needed */}
 
-          <Button 
-            onClick={handleLogout} 
-            variant="outline" 
-            className="w-full mt-6"
-          >
-            Logout
-          </Button>
-        </CardContent>
-      </Card>
+       
+          </CardContent>
+        </Card>
+          </div>
+          <AlertDialogFooter className="px-6 pb-4 pt-2 bg-muted/50">
+        <AlertDialogCancel>Close</AlertDialogCancel>
+             <Button 
+          onClick={handleLogout} 
+          variant="outline" 
+          className=""
+            >
+          Logout
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

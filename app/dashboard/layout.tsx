@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/app/globals.css";
-import { Toaster } from "@/components/ui/sonner"
+// import { Toaster } from "@/components/ui/sonner"
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import { AppSidebar } from "@/components/customComponents/app-sidebar";
+import { SiteHeader } from "@/components/site-header";
+import { AuthProvider } from "../context/auth-context";
+import { AuthChecker } from "@/components/customComponents/auto-checker";
 // import { Appside } from "@/components/app-sidebar"
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,14 +35,31 @@ export default function SidebarLayout({
       >
       
 
-        <SidebarProvider>
-      <AppSidebar />
-      <main>
-        <SidebarTrigger />
-        {children}
-      </main>
-    </SidebarProvider>
+        {/* <SidebarProvider>
+      <AppSidebar /> */}
+      <AuthProvider>
+        <AuthChecker />
         
+        <SidebarProvider
+          style={
+            {
+              "--sidebar-width": "calc(var(--spacing) * 72)",
+              "--header-height": "calc(var(--spacing) * 12)",
+            } as React.CSSProperties
+          }
+        >
+
+ <div className="flex min-h-screen w-full">
+            <AppSidebar />
+            <div className="flex-1">
+              <SiteHeader />
+              <main className="flex flex-col flex-1">
+                {children}
+              </main>
+            </div>
+          </div>
+        </SidebarProvider>
+        </AuthProvider>
       </body>
     </html>
   );
